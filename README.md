@@ -263,7 +263,7 @@ The following methods are implemented, but not yet tested:
 
 The following methods are implemented, but don't seem to match the actual api (parameters or constraints cause failure):
 
-- POST /api/v1/buys
+- POST /api/v1/buys *
 
 The following methods are not yet implemented: 
 
@@ -275,3 +275,20 @@ The following methods are not yet implemented:
 - PUT /api/v1/transactions/:id/complete_request
 - POST /api/v1/users
 - PUT /api/v1/users/:id
+
+* The following error is returned from the cb api when calling /buys: 
+
+  1) coinbase #buys should buy one btc:
+
+```
+  CoinbaseError: Price can't be blank
+      at Request._callback (/Users/matt/development/coinbase/lib/index.js:67:22)
+      at Request.self.callback (/Users/matt/development/coinbase/node_modules/request/index.js:142:22)
+      at Request.EventEmitter.emit (events.js:98:17)
+      at Request.<anonymous> (/Users/matt/development/coinbase/node_modules/request/index.js:856:14)
+      at Request.EventEmitter.emit (events.js:117:20)
+      at IncomingMessage.<anonymous> (/Users/matt/development/coinbase/node_modules/request/index.js:808:12)
+      at IncomingMessage.EventEmitter.emit (events.js:117:20)
+      at _stream_readable.js:895:16
+      at process._tickCallback (node.js:415:13)
+```
