@@ -264,6 +264,8 @@ coinbase.transfers.list(function (err, data) {
 
 TODO: 
 
+The api currently only supports access via the API Key method. Oauth is next. 
+
 The following methods are implemented, but not yet tested: 
 
 - GET /api/v1/orders/:id
