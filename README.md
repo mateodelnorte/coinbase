@@ -284,7 +284,7 @@ The following methods are not yet implemented:
 - POST /api/v1/users
 - PUT /api/v1/users/:id
 
-* The following error is returned from the cb api when calling /buys: 
+\* The following error is returned from the cb api when calling /buys: 
 
   1) coinbase #buys should buy one btc:
 
