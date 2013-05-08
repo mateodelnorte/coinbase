@@ -3,6 +3,7 @@ Coinbase
 
 Coinbase is a wrapper around the Coinbase.com bitcoin wallet and exchange API.
 
+***Note that the Coinbase api is undergoing development. Methods here may break and documentation at https://coinbase.com/api/doc does not always appear to match the api's current status. As time goes on, things will solidify. For functionality that is not yet implemented, and where you might be able to help out, see the TODO list at bottom of this page. 
 How to use it: 
 
 Require coinbase
@@ -27,8 +28,6 @@ coinbase.account.balance(function (err, data) {
 ```
 
 The following methods have been implemented and work against the Coinbase api. 
-
-***Note that the Coinbase api is undergoing development. Methods here may break and documentation at https://coinbase.com/api/doc does not always appear to match the api's current status. As time goes on, things will solidify. For functionality that is not yet implemented, and where you might be able to help out, see the TODO list at bottom of this page. 
 
 # TOC
    - [coinbase.account.balance](#coinbaseaccountbalance)
