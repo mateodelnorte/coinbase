@@ -48,12 +48,13 @@ describe('coinbase.account.generateReceiveAddress', function () {
     });
   });
   it('should generate a new receive address with callback', function (done) {
-    coinbase.account.generateReceiveAddress('https://www.example.com/callback', function (err, data) {
+    var url = 'https://www.example.com/callback';
+    coinbase.account.generateReceiveAddress(url, function (err, data) {
       if (err) throw err;
       log('data: ' + util.inspect(data));
       data.should.have.property('success', true);
       data.should.have.property('address');
-      data.should.have.property('callback_url'); // TODO: enforce callback value ***api is currently not passing this back. may be a bug in the api
+      data.should.have.property('callback_url', url); // TODO: enforce callback value ***api is currently not passing this back. may be a bug in the api
       done();
     });
   });
