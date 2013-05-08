@@ -1,0 +1,212 @@
+    <section class="suite">
+      <h1>coinbase</h1>
+      <dl>
+        <section class="suite">
+          <h1>#balance</h1>
+          <dl>
+            <dt>should return account balance</dt>
+            <dd><pre><code>coinbase.account.balance(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('amount');
+  data.should.have.property('currency', 'BTC');
+  done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>#receiveAddress</h1>
+          <dl>
+            <dt>should return the user's current bitcoin receive address</dt>
+            <dd><pre><code>coinbase.account.receiveAddress(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('success', true);
+  data.should.have.property('address');
+  data.should.have.property('callback_url');
+  done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>#generateReceiveAddress</h1>
+          <dl>
+            <dt>should generate a new receive address</dt>
+            <dd><pre><code>coinbase.account.generateReceiveAddress(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('success', true);
+  data.should.have.property('address');
+  data.should.have.property('callback_url');
+  done();
+});</code></pre></dd>
+            <dt>should generate a new receive address with callback</dt>
+            <dd><pre><code>coinbase.account.generateReceiveAddress('https://www.example.com/callback', function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('success', true);
+  data.should.have.property('address');
+  data.should.have.property('callback_url'); // TODO: enforce callback value ***api is currently not passing this back. may be a bug in the api
+  done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>#button</h1>
+          <dl>
+            <dt>should generate a new button</dt>
+            <dd><pre><code>var param = {
+              &quot;button&quot;: {
+                &quot;name&quot;: 'test',
+                &quot;price_string&quot;: '1.23',
+                &quot;price_currency_iso&quot;: 'USD',
+                &quot;custom&quot;: 'Order123',
+                &quot;description&quot;: 'Sample description',
+                &quot;type&quot;: 'buy_now',
+                &quot;style&quot;: 'custom_large'
+              }
+            };
+coinbase.buttons.create(param, function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('success', true);
+  data.should.have.property('button');
+  data.button.should.have.property('code');
+  data.button.should.have.property('type');
+  data.button.should.have.property('style');
+  data.button.should.have.property('text');
+  data.button.should.have.property('name');
+  data.button.should.have.property('description');
+  data.button.should.have.property('custom');
+  data.button.should.have.property('price');
+  done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>#buys</h1>
+          <dl>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>#contacts</h1>
+          <dl>
+            <dt>should return the user's previously emailed contacts</dt>
+            <dd><pre><code>coinbase.contacts(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('contacts');
+  data.should.have.property('total_count');
+  data.should.have.property('num_pages');
+  data.should.have.property('current_page');
+  done();
+});</code></pre></dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>currencies</h1>
+          <dl>
+            <section class="suite">
+              <h1>#list</h1>
+              <dl>
+                <dt>should return list of supported currencies</dt>
+                <dd><pre><code>coinbase.currencies.list(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.length.should.be.above(0);
+  done();
+});</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>#exchangeRates</h1>
+              <dl>
+                <dt>should return current currency exchange rates</dt>
+                <dd><pre><code>coinbase.currencies.exchangeRates(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('btc_to_usd');
+  data.should.have.property('usd_to_btc');
+  done();
+});</code></pre></dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>orders</h1>
+          <dl>
+            <section class="suite">
+              <h1>#list</h1>
+              <dl>
+                <dt>should return list of supported orders</dt>
+                <dd><pre><code>coinbase.orders.list(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('orders');
+  data.should.have.property('total_count');
+  data.should.have.property('num_pages');
+  data.should.have.property('current_page');
+  done();
+});</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>#get</h1>
+              <dl>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>prices</h1>
+          <dl>
+            <section class="suite">
+              <h1>#buy</h1>
+              <dl>
+                <dt>should return the total buy price for some bitcoin amount</dt>
+                <dd><pre><code>coinbase.prices.buy(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('amount');
+  data.should.have.property('currency');
+  done();
+});</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>#sell</h1>
+              <dl>
+                <dt>should return the total sell price for some bitcoin amount</dt>
+                <dd><pre><code>coinbase.prices.sell(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('amount');
+  data.should.have.property('currency');
+  done();
+});</code></pre></dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>transactions</h1>
+          <dl>
+            <section class="suite">
+              <h1>#list</h1>
+              <dl>
+                <dt>should return the user's most recent transactions</dt>
+                <dd><pre><code>coinbase.transactions.list(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('current_user');
+  data.should.have.property('balance');
+  data.should.have.property('total_count');
+  data.should.have.property('transactions');
+  done();
+});</code></pre></dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>#get</h1>
+              <dl>

@@ -1,0 +1,30 @@
+{
+  "name": "coinbase",
+  "version": "0.0.0",
+  "description": "wrapper for the coinbase bitcoin wallet & exchange API",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "DEBUG= ./node_modules/.bin/mocha -t 5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mateodelnorte/coinbase.git"
+  },
+  "dependencies": {
+    "debug": "0.7.2",
+    "lodash": "1.1.1",
+    "request": "2.16.6"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "sinon": "*",
+    "should": "*"
+  },
+  "keywords": [
+    "coinbase",
+    "bitcoin",
+    "wallet"
+  ],
+  "author": "Matt Walters",
+  "license": "BSD"
+}
