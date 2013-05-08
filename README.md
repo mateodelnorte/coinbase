@@ -31,33 +31,25 @@ The following methods have been implemented and work against the Coinbase api.
 ***Note that the Coinbase api is undergoing development. Methods here may break and documentation at https://coinbase.com/api/doc does not always appear to match the api's current status. As time goes on, things will solidify. For functionality that is not yet implemented, and where you might be able to help out, see the TODO list at bottom of this page. 
 
 # TOC
-   - [coinbase](#coinbase)
-     - [#balance](#coinbase-balance)
-     - [#receiveAddress](#coinbase-receiveaddress)
-     - [#generateReceiveAddress](#coinbase-generatereceiveaddress)
-     - [#button](#coinbase-button)
-     - [#buys](#coinbase-buys)
-     - [#contacts](#coinbase-contacts)
-     - [currencies](#coinbase-currencies)
-       - [#list](#coinbase-currencies-list)
-       - [#exchangeRates](#coinbase-currencies-exchangerates)
-     - [orders](#coinbase-orders)
-       - [#list](#coinbase-orders-list)
-       - [#get](#coinbase-orders-get)
-     - [prices](#coinbase-prices)
-       - [#buy](#coinbase-prices-buy)
-       - [#sell](#coinbase-prices-sell)
-     - [transactions](#coinbase-transactions)
-       - [#list](#coinbase-transactions-list)
-       - [#get](#coinbase-transactions-get)
-     - [transfers](#coinbase-transfers)
-       - [#list](#coinbase-transfers-list)
+   - [coinbase.account.balance](#coinbaseaccountbalance)
+   - [coinbase.account.receiveAddress](#coinbaseaccountreceiveaddress)
+   - [coinbase.account.generateReceiveAddress](#coinbaseaccountgeneratereceiveaddress)
+   - [coinbase.button](#coinbasebutton)
+   - [coinbase.buy](#coinbasebuy)
+   - [coinbase.contacts](#coinbasecontacts)
+   - [coinbase.currencies.list](#coinbasecurrencieslist)
+   - [coinbase.currencies.exchangeRates](#coinbasecurrenciesexchangerates)
+   - [coinbase.orders.list](#coinbaseorderslist)
+   - [coinbase.orders.get](#coinbaseordersget)
+   - [coinbase.prices.buy](#coinbasepricesbuy)
+   - [coinbase.prices.sell](#coinbasepricessell)
+   - [coinbase.transactions.list](#coinbasetransactionslist)
+   - [coinbase.transactions.get](#coinbasetransactionsget)
+   - [coinbase.transfers.list](#coinbasetransferslist)
 <a name=""></a>
  
-<a name="coinbase"></a>
-# coinbase
-<a name="coinbase-balance"></a>
-## #balance
+<a name="coinbaseaccountbalance"></a>
+# coinbase.account.balance
 should return account balance.
 
 ```js
@@ -70,8 +62,8 @@ coinbase.account.balance(function (err, data) {
 });
 ```
 
-<a name="coinbase-receiveaddress"></a>
-## #receiveAddress
+<a name="coinbaseaccountreceiveaddress"></a>
+# coinbase.account.receiveAddress
 should return the user's current bitcoin receive address.
 
 ```js
@@ -85,8 +77,8 @@ coinbase.account.receiveAddress(function (err, data) {
 });
 ```
 
-<a name="coinbase-generatereceiveaddress"></a>
-## #generateReceiveAddress
+<a name="coinbaseaccountgeneratereceiveaddress"></a>
+# coinbase.account.generateReceiveAddress
 should generate a new receive address.
 
 ```js
@@ -113,8 +105,8 @@ coinbase.account.generateReceiveAddress('https://www.example.com/callback', func
 });
 ```
 
-<a name="coinbase-button"></a>
-## #button
+<a name="coinbasebutton"></a>
+# coinbase.button
 should generate a new button.
 
 ```js
@@ -146,14 +138,26 @@ coinbase.buttons.create(param, function (err, data) {
 });
 ```
 
-<a name="coinbase-buys"></a>
-## #buys
-<a name="coinbase-contacts"></a>
-## #contacts
-<a name="coinbase-currencies"></a>
-## currencies
-<a name="coinbase-currencies-list"></a>
-### #list
+<a name="coinbasebuy"></a>
+# coinbase.buy
+<a name="coinbasecontacts"></a>
+# coinbase.contacts
+should return the user's previously emailed contacts.
+
+```js
+coinbase.contacts(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('contacts');
+  data.should.have.property('total_count');
+  data.should.have.property('num_pages');
+  data.should.have.property('current_page');
+  done();
+});
+```
+
+<a name="coinbasecurrencieslist"></a>
+# coinbase.currencies.list
 should return list of supported currencies.
 
 ```js
@@ -165,8 +169,8 @@ coinbase.currencies.list(function (err, data) {
 });
 ```
 
-<a name="coinbase-currencies-exchangerates"></a>
-### #exchangeRates
+<a name="coinbasecurrenciesexchangerates"></a>
+# coinbase.currencies.exchangeRates
 should return current currency exchange rates.
 
 ```js
@@ -179,10 +183,8 @@ coinbase.currencies.exchangeRates(function (err, data) {
 });
 ```
 
-<a name="coinbase-orders"></a>
-## orders
-<a name="coinbase-orders-list"></a>
-### #list
+<a name="coinbaseorderslist"></a>
+# coinbase.orders.list
 should return list of supported orders.
 
 ```js
@@ -197,12 +199,10 @@ coinbase.orders.list(function (err, data) {
 });
 ```
 
-<a name="coinbase-orders-get"></a>
-### #get
-<a name="coinbase-prices"></a>
-## prices
-<a name="coinbase-prices-buy"></a>
-### #buy
+<a name="coinbaseordersget"></a>
+# coinbase.orders.get
+<a name="coinbasepricesbuy"></a>
+# coinbase.prices.buy
 should return the total buy price for some bitcoin amount.
 
 ```js
@@ -215,8 +215,8 @@ coinbase.prices.buy(function (err, data) {
 });
 ```
 
-<a name="coinbase-prices-sell"></a>
-### #sell
+<a name="coinbasepricessell"></a>
+# coinbase.prices.sell
 should return the total sell price for some bitcoin amount.
 
 ```js
@@ -229,10 +229,8 @@ coinbase.prices.sell(function (err, data) {
 });
 ```
 
-<a name="coinbase-transactions"></a>
-## transactions
-<a name="coinbase-transactions-list"></a>
-### #list
+<a name="coinbasetransactionslist"></a>
+# coinbase.transactions.list
 should return the user's most recent transactions.
 
 ```js
@@ -247,12 +245,23 @@ coinbase.transactions.list(function (err, data) {
 });
 ```
 
-<a name="coinbase-transactions-get"></a>
-### #get
-<a name="coinbase-transfers"></a>
-## transfers
-<a name="coinbase-transfers-list"></a>
-### #list
+<a name="coinbasetransactionsget"></a>
+# coinbase.transactions.get
+<a name="coinbasetransferslist"></a>
+# coinbase.transfers.list
+should return the user's most recent transfers.
+
+```js
+coinbase.transfers.list(function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('transfers');
+  data.should.have.property('total_count');
+  data.should.have.property('num_pages');
+  data.should.have.property('current_page');
+  done();
+});
+```
 
 TODO: 
 
