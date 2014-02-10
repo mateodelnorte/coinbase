@@ -1,8 +1,5 @@
 'use strict';
 
-process.env.COINBASE_API_KEY = "NPAtD6sjTKErTYLu";
-process.env.COINBASE_API_SECRET = "9ZwNoZPhERbc75fz2r0CH0a0g3N4wm23";
-
 var log = require('debug')('coinbase:test'),
     util = require('util');
 
