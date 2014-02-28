@@ -8,9 +8,11 @@ require('should');
 var Coinbase = require('../lib/index');
 
 if (!process.env.COINBASE_API_KEY) throw new Error('You must specify a COINBASE_API_KEY environment variable to run tests');
+if (!process.env.COINBASE_API_SECRET) throw new Error('You must specify a COINBASE_API_SECRET environment variable to run tests');
 
 var coinbase = new Coinbase({
-  APIKey: process.env.COINBASE_API_KEY
+  APIKey: process.env.COINBASE_API_KEY,
+  APISecret: process.env.COINBASE_API_SECRET
 });
 
 describe('coinbase.account.balance', function () {
@@ -58,6 +60,20 @@ describe('coinbase.account.generateReceiveAddress', function () {
       done();
     });
   });
+
+  it('should generate a new receive address with a callback and label', function (done) {
+    var url = 'https://www.example.com/callback';
+    var label = 'test';
+    coinbase.account.generateReceiveAddress(url, label, function (err, data) {
+      if (err) throw err;
+      log('data: ' + util.inspect(data));
+      data.should.have.property('success', true);
+      data.should.have.property('address');
+      data.should.have.property('callback_url', url); // TODO: enforce callback value ***api is currently not passing this back. may be a bug in the api
+      data.should.have.property('label', label);
+      done();
+    });
+  });
 });
 describe('coinbase.button', function () {
   it('should generate a new button', function (done) {
@@ -90,7 +106,7 @@ describe('coinbase.button', function () {
   });
 });
 describe('coinbase.buy', function () {
-  it('should buy one btc', function (done) {
+  xit('should buy one btc', function (done) {
     coinbase.buy({ name: 'test', qty: 1, price: { cents: 1, currency_iso: 'USD' } }, function (err, data) {
       if (err) throw err;
       log('data: ' + util.inspect(data));

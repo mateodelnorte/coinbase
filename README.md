@@ -11,7 +11,8 @@ Require coinbase
 ```
 var Coinbase = require('coinbase');
 var coinbase = new Coinbase({
-  APIKey: process.env.COINBASE_API_KEY
+  APIKey: process.env.COINBASE_API_KEY,
+  APISecret: process.env.COINBASE_API_SECRET
 });
 ```
 
