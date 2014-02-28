@@ -1,6 +1,6 @@
 {
   "name": "coinbase",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "wrapper for the coinbase bitcoin wallet & exchange API",
   "main": "lib/index.js",
   "scripts": {
