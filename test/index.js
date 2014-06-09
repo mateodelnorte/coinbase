@@ -105,21 +105,6 @@ describe('coinbase.button', function () {
     });
   });
 });
-describe('coinbase.buy', function () {
-  xit('should buy one btc', function (done) {
-    coinbase.buy({ name: 'test', qty: 1, price: { cents: 1, currency_iso: 'USD' } }, function (err, data) {
-      if (err) return done(err);
-      log('data: ' + util.inspect(data, null, 5));
-      data.should.have.property('success', true);
-      data.should.have.property('transfer');
-      data.transfer.should.have.property('fees');
-      data.transfer.should.have.property('status');
-      data.transfer.should.have.property('btc');
-      data.btc.transfer.should.have.property('amount', 1);
-      done();
-    });
-  });
-});
 describe('coinbase.contacts', function () {
   it('should return the user\'s previously emailed contacts', function (done) {
     coinbase.contacts(function (err, data) {
@@ -169,10 +154,14 @@ describe('coinbase.orders.list', function () {
 });
 describe('coinbase.orders.get', function () {
   it('should return current currency exchange rates', function (done) {
-    coinbase.orders.get(0, function (err, data) {
+    coinbase.orders.list(function (err, ordersList) {
       if (err) return done(err);
-      log('data: ' + util.inspect(data, null, 5));
-      done();
+      if (ordersList.orders.length === 0) return done();
+      coinbase.orders.get(ordersList.orders[0].order.id, function (err, data) {
+        if (err) return done(err);
+        log('data: ' + util.inspect(data, null, 5));
+        done();
+      });
     });
   });
 });
@@ -213,13 +202,16 @@ describe('coinbase.transactions.list', function () {
 });
 describe('coinbase.transactions.get', function () {
   it('should return the details of an individual transaction', function (done) {
-    coinbase.transactions.get(0, function (err, data) {
+    coinbase.transactions.list(function (err, txList) {
       if (err) return done(err);
-      log('data: ' + util.inspect(data, null, 5));
-      data.should.have.property('transaction');
-      data.transaction.should.have.property('id');
-      data.transaction.should.have.property('amount');
-      done();
+      coinbase.transactions.get(txList.transactions[0].transaction.id, function (err, data) {
+        if (err) return done(err);
+        log('data: ' + util.inspect(data, null, 5));
+        data.should.have.property('transaction');
+        data.transaction.should.have.property('id');
+        data.transaction.should.have.property('amount');
+        done();
+      });
     });
   });
 });
@@ -233,6 +225,60 @@ describe('coinbase.transfers.list', function () {
       data.should.have.property('num_pages');
       data.should.have.property('current_page');
       done();
+    });
+  });
+});
+
+
+/*
+ *
+ *      WARNING!: THESE TESTS BUY/SELL REAL BTC. 
+ *                BY DEFAULT THESE ARE SKIPPED
+ *
+ */
+describe.skip('WARNING', function() {
+  describe('coinbase.buy', function () {
+    it('should buy one btc', function (done) {
+      coinbase.buy({ name: 'test', qty: 1, price: { cents: 1, currency_iso: 'USD' } }, function (err, data) {
+        if (err) return done(err);
+        log('data: ' + util.inspect(data, null, 5));
+        data.should.have.property('success', true);
+        data.should.have.property('transfer');
+        data.transfer.should.have.property('fees');
+        data.transfer.should.have.property('status');
+        data.transfer.should.have.property('btc');
+        data.btc.transfer.should.have.property('amount', 1);
+        done();
+      });
+    });
+  });
+
+  describe('coinbase.transactions.send_money', function () {
+    var to = 'REPLACE_ME@SOMEEMAIL.FOO';
+    it('should send money and return the details of send_money transaction', function (done) {
+      var amount = '0.0000001';
+      coinbase.transactions.send_money({to: to, amount: amount, notes: 'btc4u'}, function (err, data) {
+        if (err) return done(err);
+        log('data: ' + util.inspect(data, null, 5));
+        data.should.have.property('success', true);
+        data.should.have.property('transaction');
+        data.transaction.should.have.property('id');
+        data.transaction.should.have.property('amount');
+        data.transaction.should.have.property('status', 'complete');
+        data.transaction.amount.should.have.property('amount');
+        Math.abs(Number(data.transaction.amount.amount)).should.be.eql(Number(amount));
+        done();
+      });
+    });
+
+    it('should send invalid amount and return CoinbaseError', function (done) {
+      var amount = '0.000000001'; // invalid amount
+      coinbase.transactions.send_money({to: to, amount: amount, notes: 'btc4u'}, function (err, data) {
+        err.should.have.property('error');
+        err.error.should.be.instanceOf(Array).and.have.lengthOf(1);
+        err.error[0].should.be.eql('You must enter a valid amount');
+        done();
+      });
     });
   });
 });
