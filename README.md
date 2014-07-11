@@ -3,8 +3,8 @@ Coinbase
 
 Coinbase is a wrapper around the Coinbase.com bitcoin wallet and exchange API.
 
-***Note that the Coinbase api is undergoing development. Methods here may break and documentation at https://coinbase.com/api/doc does not always appear to match the api's current status. As time goes on, things will solidify. For functionality that is not yet implemented, and where you might be able to help out, see the TODO list at bottom of this page. 
-How to use it: 
+***Note that the Coinbase api is undergoing development. Methods here may break and documentation at https://coinbase.com/api/doc does not always appear to match the api's current status. As time goes on, things will solidify. For functionality that is not yet implemented, and where you might be able to help out, see the TODO list at bottom of this page.
+How to use it:
 
 Require coinbase
 
@@ -16,7 +16,7 @@ var coinbase = new Coinbase({
 });
 ```
 
-Make a call to the API using a chosen method. 
+Make a call to the API using a chosen method.
 
 ```
 coinbase.account.balance(function (err, data) {
@@ -28,7 +28,7 @@ coinbase.account.balance(function (err, data) {
 });
 ```
 
-The following methods have been implemented and work against the Coinbase api. 
+The following methods have been implemented and work against the Coinbase api.
 
 # TOC
    - [coinbase.account.balance](#coinbaseaccountbalance)
@@ -41,13 +41,14 @@ The following methods have been implemented and work against the Coinbase api.
    - [coinbase.currencies.exchangeRates](#coinbasecurrenciesexchangerates)
    - [coinbase.orders.list](#coinbaseorderslist)
    - [coinbase.orders.get](#coinbaseordersget)
+   - [coinbase.orders.create](#coinbaseorderscreate)
    - [coinbase.prices.buy](#coinbasepricesbuy)
    - [coinbase.prices.sell](#coinbasepricessell)
    - [coinbase.transactions.list](#coinbasetransactionslist)
    - [coinbase.transactions.get](#coinbasetransactionsget)
    - [coinbase.transfers.list](#coinbasetransferslist)
 <a name=""></a>
- 
+
 <a name="coinbaseaccountbalance"></a>
 # coinbase.account.balance
 should return account balance.
@@ -201,6 +202,29 @@ coinbase.orders.list(function (err, data) {
 
 <a name="coinbaseordersget"></a>
 # coinbase.orders.get
+
+<a name="coinbaseorderscreate"></a>
+# coinbase.orders.create
+should create a new order.
+
+```js
+var param = {
+              "button": {
+                "name": "test",
+                "type": "buy_now",
+                "price_string": "1.23",
+                "price_currency_iso": "USD"
+              }
+            };
+coinbase.orders.create(param, function (err, data) {
+  if (err) throw err;
+  log('data: ' + util.inspect(data));
+  data.should.have.property('id');
+  data.should.have.property('order');
+  done();
+});
+```
+
 <a name="coinbasepricesbuy"></a>
 # coinbase.prices.buy
 should return the total buy price for some bitcoin amount.
@@ -263,11 +287,11 @@ coinbase.transfers.list(function (err, data) {
 });
 ```
 
-TODO: 
+TODO:
 
-The api currently only supports access via the API Key method. Oauth is next. 
+The api currently only supports access via the API Key method. Oauth is next.
 
-The following methods are implemented, but not yet tested: 
+The following methods are implemented, but not yet tested:
 
 - GET /api/v1/orders/:id
 - GET /api/v1/transactions/:id
@@ -276,7 +300,7 @@ The following methods are implemented, but don't seem to match the actual api (p
 
 - POST /api/v1/buys *
 
-The following methods are not yet implemented: 
+The following methods are not yet implemented:
 
 - POST /api/v1/sells
 - POST /api/v1/transactions/send_money
@@ -287,7 +311,7 @@ The following methods are not yet implemented:
 - POST /api/v1/users
 - PUT /api/v1/users/:id
 
-\* The following error is returned from the cb api when calling /buys: 
+\* The following error is returned from the cb api when calling /buys:
 
   1) coinbase #buys should buy one btc:
 

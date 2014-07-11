@@ -165,6 +165,32 @@ describe('coinbase.orders.get', function () {
     });
   });
 });
+describe('coinbase.orders.post', function () {
+  it('should generate a new order', function (done) {
+    var param = {
+                  "button": {
+                    "name": 'test',
+                    "type": 'buy_now',
+                    "price_string": '1.23',
+                    "price_currency_iso": 'USD',
+                  }
+                };
+    coinbase.orders.post(param, function (err, data) {
+      if (err) return done(err);
+      log('data: ' + util.inspect(data, null, 5));
+      data.should.have.property('success', true);
+      data.should.have.property('order');
+      data.order.should.have.property('id');
+      data.order.should.have.property('created_at');
+      data.order.should.have.property('status');
+      data.order.should.have.property('total_btc');
+      data.order.should.have.property('total_native');
+      data.order.should.have.property('receive_address');
+      data.order.should.have.property('button');
+      done();
+    });
+  });
+});
 describe('coinbase.prices.buy', function () {
   it('should return the total buy price for some bitcoin amount', function (done) {
     coinbase.prices.buy(function (err, data) {
@@ -232,7 +258,7 @@ describe('coinbase.transfers.list', function () {
 
 /*
  *
- *      WARNING!: THESE TESTS BUY/SELL REAL BTC. 
+ *      WARNING!: THESE TESTS BUY/SELL REAL BTC.
  *                BY DEFAULT THESE ARE SKIPPED
  *
  */
