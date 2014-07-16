@@ -165,32 +165,6 @@ describe('coinbase.orders.get', function () {
     });
   });
 });
-describe('coinbase.orders.post', function () {
-  it('should generate a new order', function (done) {
-    var param = {
-                  "button": {
-                    "name": 'test',
-                    "type": 'buy_now',
-                    "price_string": '1.23',
-                    "price_currency_iso": 'USD',
-                  }
-                };
-    coinbase.orders.post(param, function (err, data) {
-      if (err) return done(err);
-      log('data: ' + util.inspect(data, null, 5));
-      data.should.have.property('success', true);
-      data.should.have.property('order');
-      data.order.should.have.property('id');
-      data.order.should.have.property('created_at');
-      data.order.should.have.property('status');
-      data.order.should.have.property('total_btc');
-      data.order.should.have.property('total_native');
-      data.order.should.have.property('receive_address');
-      data.order.should.have.property('button');
-      done();
-    });
-  });
-});
 describe('coinbase.prices.buy', function () {
   it('should return the total buy price for some bitcoin amount', function (done) {
     coinbase.prices.buy(function (err, data) {
@@ -303,6 +277,33 @@ describe.skip('WARNING', function() {
         err.should.have.property('error');
         err.error.should.be.instanceOf(Array).and.have.lengthOf(1);
         err.error[0].should.be.eql('You must enter a valid amount');
+        done();
+      });
+    });
+  });
+  
+  describe('coinbase.orders.create', function () {
+    it('should generate a new order', function (done) {
+      var param = {
+                    "button": {
+                      "name": 'test',
+                      "type": 'buy_now',
+                      "price_string": '1.23',
+                      "price_currency_iso": 'USD',
+                    }
+                  };
+      coinbase.orders.create(param, function (err, data) {
+        if (err) return done(err);
+        log('data: ' + util.inspect(data, null, 5));
+        data.should.have.property('success', true);
+        data.should.have.property('order');
+        data.order.should.have.property('id');
+        data.order.should.have.property('created_at');
+        data.order.should.have.property('status');
+        data.order.should.have.property('total_btc');
+        data.order.should.have.property('total_native');
+        data.order.should.have.property('receive_address');
+        data.order.should.have.property('button');
         done();
       });
     });
